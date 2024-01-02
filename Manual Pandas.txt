@@ -1,0 +1,44 @@
+Comandos Pandas
+import pandas as pd
+
+################################
+##### Visualização da base #####
+################################
+
+# Importando dados
+base = pd.read_excel(r"08. Analisando o engajamento no Instagram.xlsx")
+
+# Mostrando as primeiras 5 linhas
+base.head()
+# OBS: Dentro do parenteses de Head podemos colocar um numero para alterar a quantidade de linhas geradas
+
+# Mostrando as ultimas 5 linhas
+base.tail()
+# OBS: Dentro do parenteses de Tail podemos colocar um numero para alterar a quantidade de linhas geradas
+
+# Mostrar as colunas, valores nulos e tipo de cada coluna
+base.info()
+
+# Mostrar quantidade de linhas e colunas do DataFrame
+base.shape
+
+# Fazer um "Contar único", mostra quais valores aparecem na coluna e quantas vezes eles aparecem
+base['Carrossel'].value_counts()
+
+# Contar quantidade de valores nulos
+base['Carrossel'].isnull().sum()
+
+# Mostrar os dados estatísticos da base
+base.describe()
+
+################################
+####### Alteração da base ######
+################################
+
+# Remover uma coluna
+base = base.drop("Visualizações", axis=1)
+# Axis = 1 (Coluna)
+# Axis = 0 (Linha)
+
+# Substituir valores nulos em uma coluna
+base.loc[base["Carrossel"].isnull(), ["Carrossel"]] = "N"
