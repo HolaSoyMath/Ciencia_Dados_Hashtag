@@ -32,7 +32,7 @@ base['Carrossel'].isnull().sum()
 base.describe()
 
 ################################
-####### Alteração da base ######
+###### Manipulação da base #####
 ################################
 
 # Remover uma coluna
@@ -42,3 +42,27 @@ base = base.drop("Visualizações", axis=1)
 
 # Substituir valores nulos em uma coluna
 base.loc[base["Carrossel"].isnull(), ["Carrossel"]] = "N"
+# Substituir valores para NaN em uma coluna
+base.loc[base["Carrossel"] == "N", ["Carrossel"]] = np.nan
+
+# Ordenar os valores
+base.sort_values(by="Curtidas", ascending=False)
+# OBS: Para ordenar do menor pro maior, baslta alterar o "ascending" para True
+base.sort_values(by="Curtidas", ascending=False).head()
+# Para ver os primeiros 5 valores, podemos utilizar o Head por exemplo
+
+# Agrupar informações
+base.groupby("Tipo")["Curtidas"].mean()
+nome_DataFrame.groupby("nome_coluna_a_ser_agrupada")["coluna_dos_valores"].funcao_agregação()
+# Há casos onde faz sentido aplicar um agrupamento fazendo um filtro em outra coluna
+# Aqui vamos filtrar na coluna Tipo, apenas os resultados de "Foto" e então agrupar os dados
+base[base["Tipo"] == "Foto"].groupby("Carrossel")[["Curtidas", "Comentários"]].mean()
+
+# Transformar uma coluna que possue mais de 1 item em linhas separadas
+# Primeiro precisamos que o código separe as informações dentro de uma lista, para depois colocar elas em várias linhas
+# Aqui vamos utilizar a coluna de Tags para realizar essa separação
+base.Tags = base.Tags.str.split('/')
+# Aqui pegamos a coluna de Tags, transformamos a informação da coluna em String e na sequência separamos em uma lista seprando-as por "/"
+
+base = base.explode("Tags")
+# Na sequencia pegamos toda a coluna Tags e expandimos ela em linha nos casos que possue mais de uma Tag
